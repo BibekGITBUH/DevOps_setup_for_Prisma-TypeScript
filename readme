@@ -22,9 +22,12 @@ or
 > npm run dev
 
 
-
-
+If you want to run backend in a seperate server use docker.
+-first create container then run that container serving at port.
+-everything is setup just follow below steps:
+1) first build the container:
 to build a container:
 > docker build --build-arg DATABASE_URL="postgresql://username:password@localhost:5432/dbname?schema=public" -t prisma-app:1.0 .
+2) the run the container
 to run container:
 > docker run -p 3000:3000 --name prisma-app-container prisma-app:1.0
