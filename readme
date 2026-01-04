@@ -5,10 +5,7 @@
 create .env file
      Paste : DATABASE_URL="postgresql://username:password@localhost:5432/dbname?schema=public"
                                          |          |                     |
-                        your Username for db    your db password       your db name
-
-
-> npx prisma migrate dev --name init                        
+                        your Username for db    your db password       your db name                      
 
 > npx prisma generate
 
@@ -22,20 +19,72 @@ or
 > npm run dev
 
 
-If you want to run backend in a seperate server use docker.
+# If you want to run backend in a seperate server use docker.
 -first create container then run that container serving at port.
 -everything is setup just follow below steps:
 1) first build the container:
 to build a container:
 > docker build --build-arg DATABASE_URL="postgresql://username:password@localhost:5432/dbname?schema=public" -t prisma-app:1.0 .
-2) the run the container
-to run container:
-> docker run -p 3000:3000 --name prisma-app-container prisma-app:1.0
-                                 |                  |
-                                 --------------------
-                                         |
-                      -------------------------------------------------------------------
+                       |                                                    |
+              providing .env variable through arg                for build u can use localhost/host.docker.internal   
+                                                          but for creating/running container must use host.docker.internal and it is for single container only, as it runs on windows so 
+2) then run the container
+to run container for the first time:
+> docker run -p 4000:3000 --name prisma-app-container prisma-app:1.0     // must create .env and write DATABASE_URL="" manually 
+                 |    |          |                  |
+           3000 map   port of    --------------------
+     to pc 4000 for   docker container      |
+    accessing 3000   --------------------------------------------------------------------
                      |   you can give here any name of your container                   |
                      |   if you dont want then remove "  --name prisma-app-container  " |        just dockers thing  :D
                      |   docker will automatically gives random weird names             |
                      --------------------------------------------------------------------
+> docker run -p 3000:3000 \
+  -e DATABASE_URL="postgresql://postgres:PostGreSqlPass8237946@host.docker.internal:5432/mydb_?schema=public" \
+  --name prisma-app-container \
+  prisma-app:1.0                                   // dont need to create .env file manually
+
+//run later wit:
+> docker ps -a 
+> docker start <container_id of prisma-app:1.0>    
+> docker stop <container_id of prisma-app:1.0>
+> docker rm <container_id of prisma-app:1.0>              
+
+
+# for running at scaled up : we need docker.compose.yml file
+docker-compose build --build-arg DATABASE_URL="postgresql://postgres:PostGreSqlPass8237946@host.docker.internal:5432/mydb_?schema=public" 
+docker-compose up --scale app=3
+                      // here this work but only for single container 
+                      //as all containers will try to connect same db with same connection string
+                      //and in windows host localhost/host.docker.internal is only for single container
+# So we need to steup db inside docker container where inside docker localhost will work for multiple containers with same connection string
+
+> docker-compose build    // docker-compose build --no-cache // to build without cache
+> docker-compose up --scale app=3   // opens 3 container 
+
+# to delete container and volumes:
+> docker-compose down -v
+
+# to check available volumes:
+> docker volume ls
+
+# check the table:
+> docker exec -it backend-db-1 psql -U postgrestester -d my_db
+> \dt
+> SELECT * FROM "User";
+
+# change user password of postgresql install inside container:
+> docker exec -it backend-db-1 psql -U postgrestester my_db
+> \du
+> ALTER USER "postgresTester" WITH PASSWORD 'PostGreSqlPass82379426';
+
+# Delete eveything at once of docker:
+> docker compose down --volumes --rmi all
+> docker system prune -a --volumes -f
+> docker builder prune -a -f
+
+
+# Note: whenever docker compose command arive you must be at root dir where docker.compose.yml files lies
+
+
+# after all of this go to docker and click on each running container ports and try hit with each port , you will hit different server connected with same and one and only db, where all server are replication of same single image as a containers.

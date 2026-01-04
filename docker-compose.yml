@@ -1,0 +1,31 @@
+
+services:
+ db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgrestester
+      POSTGRES_PASSWORD: PostGreSqlPass82379426
+      POSTGRES_DB: my_db
+    ports:
+      - "8000:5432"   # expose DB to host (for pgAdmin)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+ app:
+    build: 
+      context: .
+      args:
+        DATABASE_URL: "postgresql://postgrestester:PostGreSqlPass82379426@db:5432/my_db?schema=public"
+    # container_name: prisma-app
+    depends_on:
+      - db
+    # - redis
+    environment:
+      NODE_ENV : production
+      # or - NODE_ENV=production
+      DATABASE_URL: "postgresql://postgrestester:PostGreSqlPass82379426@db:5432/my_db?schema=public"
+    ports:
+      - "3000"
+    
+volumes:
+  postgres_data:
