@@ -57,7 +57,7 @@ docker-compose up --scale app=3
                       // here this work but only for single container 
                       //as all containers will try to connect same db with same connection string
                       //and in windows host localhost/host.docker.internal is only for single container
-      // Reminder: for this docker-compose.yml has only app service not db service
+      // Reminder: for this, docker-compose.yml has only app service not db service
 # So we need to steup db inside docker container where inside docker localhost will work for multiple containers with same connection string
 
 > docker-compose build    // docker-compose build --no-cache // to build without cache
