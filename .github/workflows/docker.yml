@@ -30,3 +30,14 @@ jobs:
           tags: |
             2121g/prisma-app:latest
             2121g/prisma-app:${{ github.sha }}
+      - name: Deploy on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PC_HOST }}
+          username: ${{ secrets.PC_USER }}
+          key: ${{ secrets.PC_SSH_KEY }}
+          script: |
+            mkdir -p ~/prisma-app
+            cd ~/prisma-app
+            docker-compose pull app
+            docker-compose up -d --scale app=3
