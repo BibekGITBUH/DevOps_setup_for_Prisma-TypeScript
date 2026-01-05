@@ -11,8 +11,8 @@ RUN npm install
 COPY . .
 
 # Prisma client
-# ARG DATABASE_URL
-# ENV DATABASE_URL=$DATABASE_URL
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 RUN npx prisma generate
 
 # Build TS → JS
