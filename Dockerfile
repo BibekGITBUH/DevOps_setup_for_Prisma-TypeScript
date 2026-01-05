@@ -11,8 +11,9 @@ RUN npm install
 COPY . .
 
 # Prisma client
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
+# ARG DATABASE_URL
+# ENV DATABASE_URL=$DATABASE_URL
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 RUN npx prisma generate
 
 # Build TS → JS
