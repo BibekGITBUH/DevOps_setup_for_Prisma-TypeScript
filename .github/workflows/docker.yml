@@ -87,10 +87,14 @@ jobs:
           host: ${{ secrets.PC_HOST }}
           username: ${{ secrets.PC_USER }}
           key: ${{ secrets.PC_SSH_KEY }}
-          port : 22
+          port: 22
           timeout: 60s
           script: |
-            mkdir -p ~/prisma-app
-            cd ~/prisma-app
+            cd ~/OneDrive/Desktop/test
             docker-compose pull app
-            docker-compose up -d --scale app=3  
+            docker-compose up -d --scale app=3 
+          # script: |
+          #   mkdir -p ~/prisma-app
+          #   cd ~/prisma-app
+          #   docker-compose pull app
+          #   docker-compose up -d --scale app=3  
