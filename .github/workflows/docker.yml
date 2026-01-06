@@ -90,7 +90,7 @@ jobs:
           port: 22
           timeout: 60s
           script: |
-            cd ~/OneDrive/Desktop/test
+            cd C:\Users\BIBEK\OneDrive\Desktop\test
             docker-compose pull app
             docker-compose up -d --scale app=3 
           # script: |
