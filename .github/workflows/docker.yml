@@ -81,12 +81,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy on EC2
+      - name: Deploy on MY_PC_WIN
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.PC_HOST }}
           username: ${{ secrets.PC_USER }}
           key: ${{ secrets.PC_SSH_KEY }}
+          port : 22
+          timeout: 60s
           script: |
             mkdir -p ~/prisma-app
             cd ~/prisma-app
