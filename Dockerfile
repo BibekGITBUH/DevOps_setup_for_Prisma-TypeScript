@@ -33,7 +33,7 @@ COPY --from=builder /app/dist ./
 # and local setup accidentally satisfied the resolution rules. so it worked in local but failed in docker.
 COPY --from=builder /app/prisma ./prisma
 COPY package*.json ./
-
+ 
 ENV NODE_ENV=production
 
 EXPOSE 3000
