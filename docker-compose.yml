@@ -1,7 +1,7 @@
 
 services:
  db:
-    image: postgres:15
+    image: postgres:15 
     environment:
       POSTGRES_USER: postgrestester
       POSTGRES_PASSWORD: PostGreSqlPass82379426

@@ -77,22 +77,22 @@ jobs:
             2121g/prisma-app:latest
             2121g/prisma-app:${{ github.sha }}
           
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy on MY_PC_WIN
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.PC_HOST }}
-          username: ${{ secrets.PC_USER }}
-          key: ${{ secrets.PC_SSH_KEY }}
-          port: 22
-          timeout: 60s
-          script: |
-            cd C:\Users\BIBEK\OneDrive\Desktop\test
-            docker-compose pull app
-            docker-compose up -d --scale app=3 
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   steps:
+  #     - name: Deploy on MY_PC_WIN
+  #       uses: appleboy/ssh-action@v1.0.3
+  #       with:
+  #         host: ${{ secrets.PC_HOST }}
+  #         username: ${{ secrets.PC_USER }}
+  #         key: ${{ secrets.PC_SSH_KEY }}
+  #         port: 22
+  #         timeout: 60s
+  #         script: |
+  #           cd C:\Users\BIBEK\OneDrive\Desktop\test
+  #           docker-compose pull app
+  #           docker-compose up -d --scale app=3 
           # script: |
           #   mkdir -p ~/prisma-app
           #   cd ~/prisma-app
