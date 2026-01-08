@@ -1,24 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prisma-app
+  name: app
 spec:
-  replicas: 2   # replaces: docker-compose scale app=2
+  replicas: 3   # <-- equivalent to --scale app=3
   selector:
     matchLabels:
       app: prisma-app
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
   template:
     metadata:
       labels:
         app: prisma-app
     spec:
       containers:
-        - name: prisma-app
+        - name: app
           image: 2121g/prisma-app:latest
           ports:
             - containerPort: 3000
@@ -26,4 +21,4 @@ spec:
             - name: NODE_ENV
               value: production
             - name: DATABASE_URL
-              value: postgresql://postgrestester:PostGreSqlPass82379426@postgres:5432/my_db?schema=public
+              value: postgresql://postgrestester:PostGreSqlPass82379426@db:5432/my_db?schema=public
